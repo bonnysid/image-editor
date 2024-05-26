@@ -12,9 +12,9 @@ export const Image: FC = () => {
     image,
     ctx,
     setCtx, canvas,
-    currentColor,
     setCanvas,
     onChangeCurrentColor,
+    setCanvasImageData,
   } = useImageContext();
 
   const {getInputProps, getRootProps} = useDropzone({
@@ -31,6 +31,8 @@ export const Image: FC = () => {
       canvas.width = image?.naturalWidth;
       canvas.height = image?.naturalHeight;
       ctx.drawImage(image, 0, 0);
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      setCanvasImageData(imageData);
     }
   }, [canvas, ctx, image]);
 

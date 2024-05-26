@@ -12,8 +12,14 @@ export type ImageContextState = {
   file?: File;
   imageColorDepth?: number;
   imageData?: ImageUploadResult;
+  canvasImageData?: ImageData;
+  formattedCanvasImageData?: ImageData;
+  setCanvasImageData: (value: ImageData) => void;
+  setFormattedCanvasImageData: (value: ImageData) => void;
   currentColor?: ImageColor;
   onChangeCurrentColor: (color?: ImageColor) => void;
+  selectedChannel: SelectedChannelVariant;
+  setSelectedChannel: (value: SelectedChannelVariant) => void;
   onLoadImage: (file: File) => void;
 }
 
@@ -36,11 +42,21 @@ export type ImageColor = {
   b: number;
 }
 
+export enum SelectedChannelVariant {
+  RGB = 'rgb',
+  R = 'r',
+  G = 'g',
+  B = 'b',
+}
+
 export const ImageProvider: FC<PropsWithChildren> = ({ children }) => {
+  const [selectedChannel, setSelectedChannel] = useState<SelectedChannelVariant>(SelectedChannelVariant.RGB);
   const [image, setImage] = useState<HTMLImageElement>();
   const [file, setFile] = useState<File>();
   const [imageColorDepth, setImageColorDepth] = useState<number>();
   const [imageData, setImageData] = useState<ImageUploadResult>();
+  const [canvasImageData, setCanvasImageData] = useState<ImageData>();
+  const [formattedCanvasImageData, setFormattedCanvasImageData] = useState<ImageData>();
   const [selectedColorModel, setSelectedColorModel] = useState<ColorModel>()
   const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null);
   const [ctx, setCtx] = useState<CanvasRenderingContext2D | null | undefined>(null);
@@ -82,7 +98,13 @@ export const ImageProvider: FC<PropsWithChildren> = ({ children }) => {
       setCanvas,
       setCtx,
       currentColor,
+      canvasImageData,
+      setCanvasImageData,
       onChangeCurrentColor: setCurrentColor,
+      selectedChannel,
+      setSelectedChannel,
+      formattedCanvasImageData,
+      setFormattedCanvasImageData,
     }}>
       {children}
     </ImageContext.Provider>

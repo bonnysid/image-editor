@@ -244,6 +244,34 @@ export const rgbToOther = (r: number, g: number, b: number) => {
   }
 }
 
+export const linearCorrection = (imageData: ImageData, slope: number, intercept: number) => {
+  for (let i = 0; i < imageData.data.length; i += 4) {
+    let avg = (imageData.data[i] + imageData.data[i + 1] + imageData.data[i + 2]) / 3; // Среднее значение яркости пикселя
+    // Применяем линейное преобразование к среднему значению яркости пикселя
+    avg = slope * avg + intercept;
+    // Ограничиваем среднее значение яркости пикселя от 0 до 255
+    avg = Math.min(255, Math.max(0, avg));
+    // Обновляем значения каналов RGB пикселя с учетом среднего значения яркости
+    imageData.data[i] = avg; // Красный канал
+    imageData.data[i + 1] = avg; // Зеленый канал
+    imageData.data[i + 2] = avg; // Синий канал
+  }
+  return imageData;
+}
+
+export const gammaCorrection = (imageData: ImageData, gamma: number) => {
+  for (let i = 0; i < imageData.data.length; i += 4) {
+    let avg = (imageData.data[i] + imageData.data[i + 1] + imageData.data[i + 2]) / 3; // Среднее значение яркости пикселя
+    // Применяем гамма-коррекцию к среднему значению яркости пикселя
+    avg = 255 * Math.pow(avg / 255, 1 / gamma);
+    // Обновляем значения каналов RGB пикселя с учетом среднего значения яркости
+    imageData.data[i] = avg; // Красный канал
+    imageData.data[i + 1] = avg; // Зеленый канал
+    imageData.data[i + 2] = avg; // Синий канал
+  }
+  return imageData;
+}
+
 export const convertColor = ({
   ycc,
   hsv,

@@ -15,3 +15,10 @@ export const Content = styled.div`
   height: 100%;
   width: 100%;
 `;
+
+export const ImageContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+`;
