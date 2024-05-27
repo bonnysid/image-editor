@@ -19,7 +19,7 @@ export type ImageContextState = {
   currentColor?: ImageColor;
   onChangeCurrentColor: (color?: ImageColor) => void;
   selectedChannel: SelectedChannelVariant;
-  setSelectedChannel: (value: SelectedChannelVariant) => void;
+  setSelectedChannel: (value: string) => void;
   onLoadImage: (file: File) => void;
 }
 
@@ -102,7 +102,7 @@ export const ImageProvider: FC<PropsWithChildren> = ({ children }) => {
       setCanvasImageData,
       onChangeCurrentColor: setCurrentColor,
       selectedChannel,
-      setSelectedChannel,
+      setSelectedChannel: (value: string) => setSelectedChannel(value as SelectedChannelVariant),
       formattedCanvasImageData,
       setFormattedCanvasImageData,
     }}>

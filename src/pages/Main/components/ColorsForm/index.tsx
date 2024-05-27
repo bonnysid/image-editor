@@ -3,7 +3,7 @@ import { useFormik } from 'formik';
 import * as ST from './styled';
 import { ColorInputs } from '@pages/Main/components/ColorInputs';
 import { convertColor, rgbToCmyk, rgbToHsl, rgbToHsv, rgbToLab, rgbToYcc } from '@src/utils/colors';
-import { ColorModel, ImageColor } from '@pages/Main/provider';
+import { ColorModel, ImageColor } from '@src/providers/ImageContextProvider';
 
 type FormType = {
   rgb: {

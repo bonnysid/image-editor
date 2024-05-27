@@ -1,10 +1,18 @@
 import { FC, useEffect, useState } from 'react';
 import * as ST from './styled';
-import { SelectedChannelVariant, useImageContext } from '@pages/Main/provider';
+import { SelectedChannelVariant, useImageContext } from '@src/providers/ImageContextProvider';
 import { COLORS } from '@src/constants';
+import { Card, Select } from '@src/components';
 
-export const Histogram: FC = () => {
-  const { formattedCanvasImageData, canvasImageData, selectedChannel, image } = useImageContext();
+const CHANNEL_OPTIONS = [
+  { value: SelectedChannelVariant.RGB, label: 'RGB' },
+  { value: SelectedChannelVariant.R, label: 'R' },
+  { value: SelectedChannelVariant.G, label: 'G' },
+  { value: SelectedChannelVariant.B, label: 'B' },
+]
+
+export const HistogramCard: FC = () => {
+  const { formattedCanvasImageData, canvasImageData, selectedChannel, setSelectedChannel } = useImageContext();
   const [canvasHistogram, setCanvasHistogram] = useState<HTMLCanvasElement | null>(null);
   const [ctxHistogram, setCtxHistogram] = useState<CanvasRenderingContext2D | null | undefined>(null);
 
@@ -16,7 +24,7 @@ export const Histogram: FC = () => {
 
       setHistogramData(histogram);
     }
-  }, [formattedCanvasImageData, canvasImageData]);
+  }, [formattedCanvasImageData, canvasImageData, canvasHistogram, ctxHistogram]);
 
   const calculateHistogram = (data: Uint8ClampedArray) => {
     const histogram = {
@@ -37,12 +45,14 @@ export const Histogram: FC = () => {
   const drawHistogram = () => {
     if (canvasHistogram && ctxHistogram && histogramData) {
       const barWidth = 2;
-      const barSpacing = 1;
-      const scaleFactor = 0.1 / canvasHistogram.height;
+      const maxH = Math.max(...histogramData.b, ...histogramData.r, ...histogramData.b);
+
       const offset = 10;
+      const scaleFactorH = 1 / (maxH / (canvasHistogram.height - offset * 2));
+      const scaleFactorW = 1 / (barWidth * (canvasHistogram.width - offset * 2) / canvasHistogram.width);
 
       ctxHistogram.clearRect(0, 0, canvasHistogram.width, canvasHistogram.height);
-      ctxHistogram.fillStyle = COLORS.gray90
+      ctxHistogram.fillStyle = COLORS.white
       ctxHistogram.fillRect(0, 0, canvasHistogram.width, canvasHistogram.height);
 
       for (let i = 0; i < 256; i++) {
@@ -50,17 +60,17 @@ export const Histogram: FC = () => {
         if (selectedChannel.includes(SelectedChannelVariant.R)) {
           value = histogramData.r[i];
           ctxHistogram.fillStyle = 'red';
-          ctxHistogram.fillRect(i * (barWidth + barSpacing) + offset, canvasHistogram.height - value * scaleFactor, barWidth, value * scaleFactor);
+          ctxHistogram.fillRect(i * (barWidth) * scaleFactorW + offset, canvasHistogram.height - value * scaleFactorH - offset, barWidth * scaleFactorW, value * scaleFactorH);
         }
         if (selectedChannel.includes(SelectedChannelVariant.G)) {
           value = histogramData.g[i];
           ctxHistogram.fillStyle = 'green';
-          ctxHistogram.fillRect(i * (barWidth + barSpacing) + offset, canvasHistogram.height - value * scaleFactor, barWidth, value * scaleFactor);
+          ctxHistogram.fillRect(i * barWidth * scaleFactorW + offset, canvasHistogram.height - value * scaleFactorH - offset, barWidth * scaleFactorW, value * scaleFactorH);
         }
         if (selectedChannel.includes(SelectedChannelVariant.B)) {
           value = histogramData.b[i];
           ctxHistogram.fillStyle = 'blue';
-          ctxHistogram.fillRect(i * (barWidth + barSpacing) + offset, canvasHistogram.height - value * scaleFactor, barWidth, value * scaleFactor);
+          ctxHistogram.fillRect(i * barWidth * scaleFactorW + offset, canvasHistogram.height - value * scaleFactorH - offset, barWidth * scaleFactorW, value * scaleFactorH);
         }
       }
     }
@@ -73,14 +83,20 @@ export const Histogram: FC = () => {
   }, [histogramData, selectedChannel]);
 
   return (
-    <ST.Wrapper>
+    <Card title="Гистограмма">
+      <Select
+        value={selectedChannel}
+        onChange={setSelectedChannel}
+        options={CHANNEL_OPTIONS}
+        caption="Канал"
+      />
+
       <ST.Canvas
         ref={(ref) => {
           setCanvasHistogram(ref);
           setCtxHistogram(ref?.getContext('2d'));
         }}
-        width={image?.width}
       />
-    </ST.Wrapper>
+    </Card>
   )
 }

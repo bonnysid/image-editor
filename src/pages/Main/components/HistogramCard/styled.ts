@@ -8,6 +8,8 @@ export const Wrapper = styled.div`
   background: ${COLORS.darkGray120};
   padding: 10px;
   justify-content: center;
+  position: absolute;
+  bottom: 0px;
 `;
 
 export const Canvas = styled.canvas``;

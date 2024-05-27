@@ -14,6 +14,7 @@ export const Content = styled.div`
   display: flex;
   height: 100%;
   width: 100%;
+  overflow: hidden;
 `;
 
 export const ImageContent = styled.div`
@@ -21,4 +22,6 @@ export const ImageContent = styled.div`
   flex-direction: column;
   height: 100%;
   width: 100%;
+  position: relative;
+  overflow: hidden;
 `;

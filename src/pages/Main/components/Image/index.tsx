@@ -2,7 +2,7 @@ import { FC, useEffect, useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import * as ST from './styled';
 import { IconSize } from '@src/components';
-import { useImageContext } from '@pages/Main/provider';
+import { useImageContext } from '@src/providers/ImageContextProvider';
 
 export const IMAGE_ELEMENT_ID = 'image';
 
