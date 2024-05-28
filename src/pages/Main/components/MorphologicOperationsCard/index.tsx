@@ -71,7 +71,7 @@ export const MorphologicOperationsCard: FC = () => {
   });
 
   return (
-    <Card title="Морфологические операции">
+    <Card title="Морфологические операции" disabled={!canvasImageData}>
       <Range value={erosion} onChange={onChangeErosion} caption="Эрозия" />
       <Range value={dilation} onChange={onChangeDilation} caption="Дилатация" />
       <Range value={opening} onChange={onChangeOpening} caption="Открытие" />

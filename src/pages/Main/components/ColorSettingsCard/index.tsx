@@ -103,7 +103,7 @@ export const ColorSettingsCard: FC = () => {
   }, [saturation, contrast, brightness, slope, intercept, gamma]);
 
   return (
-    <Card title="Настройки цвета">
+    <Card title="Настройки цвета" disabled={!canvasImageData}>
       <Range value={brightness} onChange={onChangeBrightness} caption="Яркость" />
       <Range value={saturation} onChange={onChangeSaturation} caption="Насыщенность" />
       <Range value={contrast} onChange={onChangeContrast} caption="Контрастность" />

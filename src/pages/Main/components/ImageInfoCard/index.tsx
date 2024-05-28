@@ -8,7 +8,7 @@ export const ImageInfoCard: FC = () => {
   const { file, imageData } = useImageContext();
 
   return (
-    <Card title="Информация файла">
+    <Card title="Информация файла" disabled={!file}>
       <ST.InfoItem>
         Наименование:
         <ST.InfoItemValue>{file?.name}</ST.InfoItemValue>

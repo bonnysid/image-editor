@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
   width: 100%;
   background: ${COLORS.darkGray120};
   color: ${COLORS.white};
-  overflow: hidden;
+  overflow-y: auto;
 `;
 
 export const InfoItem = styled.div`

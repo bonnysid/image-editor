@@ -6,14 +6,15 @@ import { useModalControls } from '@src/hooks/useModalControls';
 type Props = PropsWithChildren<{
   icon?: IconTypes;
   title: string;
+  disabled?: boolean;
 }>;
 
-export const Card: FC<Props> = ({ title, icon, children }) => {
+export const Card: FC<Props> = ({ title, icon, children, disabled }) => {
   const { isOpen, toggle } = useModalControls();
 
   return (
     <ST.Wrapper>
-      <ST.Header onClick={toggle}>
+      <ST.Header onClick={!disabled ? toggle : undefined}>
         <ST.Title>{title}</ST.Title>
       </ST.Header>
       {isOpen && <ST.Content>{children}</ST.Content>}

@@ -84,7 +84,7 @@ export const ImageSettingsCard: FC = () => {
   })
 
   return (
-    <Card title="Настройки изображения">
+    <Card title="Настройки изображения" disabled={!canvasImageData}>
       <Button text="Оператор Робертса" onClick={handleClickOperatorRoberts} />
 
       <Range value={motionBlur} onChange={onChangeMotionBlur} caption="Размытие в движении" min="1" />

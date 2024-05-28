@@ -21,6 +21,7 @@ export type ImageContextState = {
   selectedChannel: SelectedChannelVariant;
   setSelectedChannel: (value: string) => void;
   onLoadImage: (file: File) => void;
+  processImage: (method: ProcessImageVariants) => void;
 }
 
 const ImageContext = createContext<ImageContextState>({} as ImageContextState);
@@ -47,6 +48,13 @@ export enum SelectedChannelVariant {
   R = 'r',
   G = 'g',
   B = 'b',
+}
+
+export enum ProcessImageVariants {
+  HARRIS = 'harris',
+  SIFT = 'sift',
+  SURF = 'surf',
+  FAST = 'fast',
 }
 
 export const ImageProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -86,6 +94,29 @@ export const ImageProvider: FC<PropsWithChildren> = ({ children }) => {
     })
   }
 
+  const processImage = async (method: ProcessImageVariants) => {
+    if (file) {
+      const formData = new FormData();
+      formData.append('photo', file);
+      formData.append('method', method);
+
+      try {
+        const response = await ImageApi.processImage(formData);
+        const url = response.data.image_url;
+        const img = new Image();
+        img.src = url;
+
+        img.onload = () => {
+          if (ctx) {
+            ctx.drawImage(img, 0, 0);
+          }
+        }
+      } catch (error) {
+        console.error('Error processing image:', error);
+      }
+    }
+  };
+
   return (
     <ImageContext.Provider value={{
       file,
@@ -105,6 +136,7 @@ export const ImageProvider: FC<PropsWithChildren> = ({ children }) => {
       setSelectedChannel: (value: string) => setSelectedChannel(value as SelectedChannelVariant),
       formattedCanvasImageData,
       setFormattedCanvasImageData,
+      processImage,
     }}>
       {children}
     </ImageContext.Provider>

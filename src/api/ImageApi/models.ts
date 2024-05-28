@@ -17,3 +17,7 @@ export type ImageUploadResult = {
     interlace?: boolean;
   }
 }
+
+export type ImageProcessResult = {
+  image_url: string;
+}

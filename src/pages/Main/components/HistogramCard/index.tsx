@@ -83,7 +83,7 @@ export const HistogramCard: FC = () => {
   }, [histogramData, selectedChannel]);
 
   return (
-    <Card title="Гистограмма">
+    <Card title="Гистограмма" disabled={!canvasImageData}>
       <Select
         value={selectedChannel}
         onChange={setSelectedChannel}

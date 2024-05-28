@@ -23,6 +23,7 @@ export const Container = styled.div`
   display: flex;
   width: 100%;
   border-radius: 10px;
+  max-width: 750px;
 `;
 
 

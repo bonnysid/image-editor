@@ -6,22 +6,28 @@ import { MorphologicOperationsProvider } from '@src/providers/MorphologicOperati
 import { ColorSettingsProvider } from '@src/providers/ColorSettingsProvider';
 import { ImageProvider } from '@src/providers/ImageContextProvider';
 import { ImageSettingsProvider } from '@src/providers/ImageSettingsProvider';
+import {EditorTypeProvider} from "@src/providers/EditorTypeProvider";
+import {VideoProvider} from "@src/providers/VideoProvider";
 
 const App = () => {
   return (
     <BrowserRouter>
-      <ImageProvider>
-        <ImageSettingsProvider>
-          <MorphologicOperationsProvider>
-            <ColorSettingsProvider>
-              <ST.GlobalStyles />
-              <ST.AppWrapper>
-                <AppRouter />
-              </ST.AppWrapper>
-            </ColorSettingsProvider>
-          </MorphologicOperationsProvider>
-        </ImageSettingsProvider>
-      </ImageProvider>
+      <EditorTypeProvider>
+        <VideoProvider>
+          <ImageProvider>
+            <ImageSettingsProvider>
+              <MorphologicOperationsProvider>
+                <ColorSettingsProvider>
+                  <ST.GlobalStyles />
+                  <ST.AppWrapper>
+                    <AppRouter />
+                  </ST.AppWrapper>
+                </ColorSettingsProvider>
+              </MorphologicOperationsProvider>
+            </ImageSettingsProvider>
+          </ImageProvider>
+        </VideoProvider>
+      </EditorTypeProvider>
     </BrowserRouter>
   );
 }
